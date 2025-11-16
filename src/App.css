@@ -48,6 +48,7 @@ button {
 }
 
 #permissionsButtonDiv {
+  text-align: center;
   margin: 0 auto;
 }
 
@@ -63,4 +64,35 @@ button {
   max-width: 390px;            /* Limit width so it doesn't stretch */
   width: 100%;                 
   justify-content: center;
+}
+
+#choiceForm {
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-content {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 5px;
+}
+
+.cardIcon {
+  width: 130px;
+  height: auto;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }

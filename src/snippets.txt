@@ -1,0 +1,15 @@
+// Get Spotify User Profile
+const getSearchResults = async (searchQuery, page) => {
+
+    const endpoint = '/v1/me';
+    const url = `${baseUrl}${endpoint}`;
+
+    const profileResponse = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    if (!profileResponse.ok) throw new Error('Network error while querying users profile at /v1/me');
+    return profileResponse;
+  };

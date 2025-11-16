@@ -1,44 +1,36 @@
-async function exchangeCodeForToken(code) {
+async function exchangeCodeForToken(code, state) {
 
     const codeVerifier = localStorage.getItem('code_verifier');
-    localStorage.removeItem('code_verifier');
-    const clientId = '91abbeed1fc745b6b9d501bfdf22a243';
-    const redirectUri = 'http://127.0.0.1:5175/callback';
-
-    console.log("CodeVerifier: " + codeVerifier);
-    //console.log(code);
-    const url = "https://accounts.spotify.com/api/token";
-    const params = new URLSearchParams({
-        client_id: clientId,
-        grant_type: 'authorization_code',
-        code: code,
-        redirect_uri: redirectUri,
-        code_verifier: codeVerifier,
-    });
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params, // Pass URLSearchParams directly
-        });
-
-        if (!response.ok) {
-            const error = await response.text();
-            console.error('Token exchange failed:', response.status, error);
-            return null;
-        }
-
-        const data = await response.json();
-        localStorage.setItem('access_token', data.access_token);
-        console.log('Access token saved: ', data.access_token);
-        return data;
-    } catch (err) {
-        console.error('Fetch error:', err);
-        return null;
+    const storedState = localStorage.getItem('spotify_auth_state');
+    if (state !== storedState) {
+        throw new Error('State mismatch - possible CSRF');
     }
+
+    const response = await fetch('http://127.0.0.1:5176/api/exchange', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            code, // from URL
+            code_verifier: codeVerifier  // from PKCE
+        })
+    });
+    if (!response.ok) {
+        throw new Error('Network error doing POST to /api/exchange.');
+    }
+
+    // Get access_token and other fields from back end...
+    const tokenData = await response.json();
+
+    // Store tokens
+    localStorage.setItem('spotify_access_token', tokenData.access_token);
+    localStorage.setItem('spotify_refresh_token', tokenData.refresh_token || '');
+    localStorage.setItem('spotify_expires_at', Date.now() + tokenData.expires_in * 1000);
+
+    // Clean up PKCE & state
+    localStorage.removeItem('code_verifier');
+    localStorage.removeItem('spotify_auth_state');
+
+    return tokenData;
 }
 
 export default exchangeCodeForToken
