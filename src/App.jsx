@@ -53,7 +53,13 @@ function App() {
     setLoginTriggered(true);
   }
   function handleClickArtist(e) {
+
+    // Remove previous selection
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.remove('selected-card');
+    });
     setArtistId(e.currentTarget.dataset.artistId);
+    e.currentTarget.classList.add('selected-card');
   }
   function handleClickAlbum(e) {
     setAlbumId(e.currentTarget.dataset.albumId);

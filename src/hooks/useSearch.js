@@ -71,7 +71,6 @@ export function useSearch() {
         setResults(jsonData.artists.items || []);
       } else if('album' === selectedOption) {
         setResults(jsonData.items || []);
-        console.log(jsonData.items);
       }
     } catch (err) {
       console.error("Search failed:", err);

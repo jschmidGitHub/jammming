@@ -81,6 +81,17 @@ button {
   overflow: hidden;
 }
 
+.selected-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-style: solid;
+  border-width: 2px;
+  border-color: rgb(255, 0, 255);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
 .card-content {
   display: flex;
   gap: 10px;
