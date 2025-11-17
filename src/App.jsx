@@ -1,7 +1,8 @@
 import SearchBar from './SearchBar.jsx';
 import Tracklist from './Tracklist.jsx';
 import { useState, useEffect } from 'react';
-import { useSearch } from './hooks/useSearch.js';
+import { useSearch }   from './hooks/useSearch.js';
+import { usePlaylist } from './hooks/usePlaylist.js';
 import getPermissions from './getPermissions.js';
 import exchangeCodeForToken from './exchangeCodeForToken.js';
 import './App.css';
@@ -9,10 +10,10 @@ import './App.css';
 function App() {
 
   const { results, loading, query, setQuery, search, hasMore, totalPages, selectedOption, setSelectedOption } = useSearch();
+  const { tracks, addTrack, removeTrack, clearTracks } = usePlaylist();
   const [loginTriggered, setLoginTriggered] = useState(false);
   const [artistId, setArtistId] = useState('');
   const [albumId, setAlbumId] = useState('');
-  const [trackId, setTrackId] = useState('');
   let cardList = [];
 
   // Trigger login redirect
@@ -72,12 +73,15 @@ function App() {
     setAlbumId(e.currentTarget.dataset.albumId);
     e.currentTarget.classList.add('selected-card');
   }
-  function handleClickTrack(e) {
-    setTrackId(e.currentTarget.dataset.trackId);
-  }
   function handleAddTrack(e) {
-    setTrackId(e.currentTarget.dataset.albumId);
-    console.log("Should add track: ", e.currentTarget.dataset.trackName, e.currentTarget.dataset.albumId);
+
+    const newTrack = {
+      id: e.currentTarget.dataset.trackId,
+      name: e.currentTarget.dataset.trackName,
+      uri: e.currentTarget.dataset.trackUri,
+    };
+    console.log("Should add track: ", newTrack);
+    addTrack(newTrack);
   }
 
   if (results.length > 0) {
@@ -123,12 +127,14 @@ function App() {
       ));
     } else { // 'track'
       cardList = results.map(item => (
-        <div className="track-card" key={`${item.id}`} data-track-id={item.id} onClick={handleClickTrack}>
+        <div className="track-card" key={`${item.id}`} data-track-id={item.id} >
           <h2>{item.name}</h2>
           <button 
             className="addTrackButton" 
-            data-album-id={item.id} 
+            data-track-id={item.id} 
             data-track-name={item.name}
+            data-track-uri={item.uri}
+
             onClick={handleAddTrack}>
           Add
           </button>
@@ -168,7 +174,7 @@ function App() {
         setSelectedOption={setSelectedOption}
       />
       {loading && <p>Loading...</p>}
-      <Tracklist />
+      <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
       {cardList}
     </div>
   );
