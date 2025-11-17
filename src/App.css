@@ -47,6 +47,14 @@ button {
   background-color: white;
 }
 
+.addTrackButton {
+  padding: 10px;
+  font-size: 1rem;
+  color: black;
+  background-color: white;
+  border-radius: 10px;
+}
+
 #permissionsButtonDiv {
   text-align: center;
   margin: 0 auto;
@@ -95,7 +103,6 @@ button {
 .track-card {
   margin: 1rem auto;
   padding: 5px;
-
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
@@ -103,7 +110,6 @@ button {
   margin-bottom: 1rem;
   max-width: 390px;            /* Limit width so it doesn't stretch */
   width: 100%;                 
-
 }
 
 .card-content {

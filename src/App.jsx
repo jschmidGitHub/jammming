@@ -1,4 +1,5 @@
 import SearchBar from './SearchBar.jsx';
+import Tracklist from './Tracklist.jsx';
 import { useState, useEffect } from 'react';
 import { useSearch } from './hooks/useSearch.js';
 import getPermissions from './getPermissions.js';
@@ -124,7 +125,7 @@ function App() {
       cardList = results.map(item => (
         <div className="track-card" key={`${item.id}`} data-track-id={item.id} onClick={handleClickTrack}>
           <h2>{item.name}</h2>
-          <button data-album-id={item.id} onClick={handleAddTrack}>Add</button>
+          <button className="addTrackButton" data-album-id={item.id} onClick={handleAddTrack}>Add</button>
         </div>
       ));
     }
@@ -161,6 +162,7 @@ function App() {
         setSelectedOption={setSelectedOption}
       />
       {loading && <p>Loading...</p>}
+      <Tracklist />
       {cardList}
     </div>
   );
