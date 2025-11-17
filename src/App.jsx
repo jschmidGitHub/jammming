@@ -74,6 +74,10 @@ function App() {
   function handleClickTrack(e) {
     setTrackId(e.currentTarget.dataset.trackId);
   }
+  function handleAddTrack(e) {
+    setTrackId(e.currentTarget.dataset.albumId);
+    console.log("Should add track: ", e.currentTarget.dataset.albumId);
+  }
 
   if (results.length > 0) {
     if (selectedOption === 'artist') {
@@ -120,7 +124,7 @@ function App() {
       cardList = results.map(item => (
         <div className="track-card" key={`${item.id}`} data-track-id={item.id} onClick={handleClickTrack}>
           <h2>{item.name}</h2>
-          <button>Add</button>
+          <button data-album-id={item.id} onClick={handleAddTrack}>Add</button>
         </div>
       ));
     }
