@@ -11,26 +11,36 @@ export function useSearch() {
   const baseUrl = 'https://api.spotify.com';
   const accessToken = localStorage.getItem('spotify_access_token');
 
-  const getSearchResults = async (searchQuery, page, selectedOption, artistId) => {
+  const getSearchResults = async (searchQuery, page, selectedOption, artistId, albumId) => {
 
-    let endpoint = '/v1/search';
+    let endpoint = '';
     let url = '';
     if ('artist' === selectedOption) {
+
+      endpoint = '/v1/search';
       url = `${baseUrl}${endpoint}?q=artist%3A${encodeURIComponent(searchQuery)}&type=artist`;
     } else if('album' === selectedOption) {
+
       // If artistId not blank then do an artist-album search
       if(artistId) {
-        console.log(`artistId: ${artistId}, listing albums`);
+
+        console.log(`artistId: ${artistId}, listing albums for the artist`);
         endpoint = `/v1/artists/${artistId}/albums`;
         url = `${baseUrl}${endpoint}`;
       } else {
+
         console.log("blank artistID, searching all albums");
+        endpoint = '/v1/search';
         url = `${baseUrl}${endpoint}?q=album%3A${encodeURIComponent(searchQuery)}&type=album`;
+        console.log(url);
       }
-    } 
-    else {
-      url = `${baseUrl}${endpoint}?q=${encodeURIComponent(searchQuery)}`;
+    } else { // album-tracks
+
+      console.log(`artistId: ${artistId}, albumId: ${albumId} listing tracks for album`);
+      endpoint = `/v1/albums/${albumId}`;
+      url = `${baseUrl}${endpoint}`;
     }
+
 
     const profileResponse = await fetch(url, {
       headers: {
@@ -42,7 +52,7 @@ export function useSearch() {
     return profileResponse;
   };
 
-  const search = async (searchQuery, pageNum, selectedOption, artistId, append = false) => {
+  const search = async (searchQuery, pageNum, selectedOption, artistId, albumId, append = false) => {
 
     if (!searchQuery.trim()) {
       setResults([]);
@@ -54,7 +64,7 @@ export function useSearch() {
 
     setLoading(true);
     try {
-      const response = await getSearchResults(searchQuery, pageNum, selectedOption, artistId);
+      const response = await getSearchResults(searchQuery, pageNum, selectedOption, artistId, albumId);
       const jsonData = await response.json();
 
       //const newTotalPages = jsonData.total_pages || 1;
@@ -70,7 +80,16 @@ export function useSearch() {
       if ('artist' === selectedOption) {
         setResults(jsonData.artists.items || []);
       } else if('album' === selectedOption) {
-        setResults(jsonData.items || []);
+        if(artistId) {
+          setResults(jsonData.items || []);
+          console.log("artist-album listing results: ", jsonData.items);
+        } else { // artistId is blank, did album search
+          setResults(jsonData.albums.items || []);
+          console.log("searched plain albums: ", jsonData.albums.items);
+        }
+      } else { //track
+          console.log("searched artist's selected album for tracks: ", jsonData.tracks.items);
+          setResults(jsonData.tracks.items);
       }
     } catch (err) {
       console.error("Search failed:", err);

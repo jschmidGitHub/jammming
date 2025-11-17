@@ -11,6 +11,7 @@ function App() {
   const [loginTriggered, setLoginTriggered] = useState(false);
   const [artistId, setArtistId] = useState('');
   const [albumId, setAlbumId] = useState('');
+  const [trackId, setTrackId] = useState('');
   let cardList = [];
 
   // Trigger login redirect
@@ -62,8 +63,18 @@ function App() {
     e.currentTarget.classList.add('selected-card');
   }
   function handleClickAlbum(e) {
+
+    // Remove previous selection
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.remove('selected-card');
+    });
     setAlbumId(e.currentTarget.dataset.albumId);
+    e.currentTarget.classList.add('selected-card');
   }
+  function handleClickTrack(e) {
+    setTrackId(e.currentTarget.dataset.trackId);
+  }
+
   if (results.length > 0) {
     if (selectedOption === 'artist') {
 
@@ -100,8 +111,16 @@ function App() {
                 e.target.onerror = null; // prevent infinite loop if noPic.png is also missing
               }}
             />
+            <p>{item.total_tracks} tracks</p>
 
           </div>
+        </div>
+      ));
+    } else { // 'track'
+      cardList = results.map(item => (
+        <div className="track-card" key={`${item.id}`} data-track-id={item.id} onClick={handleClickTrack}>
+          <h2>{item.name}</h2>
+          <button>Add</button>
         </div>
       ));
     }

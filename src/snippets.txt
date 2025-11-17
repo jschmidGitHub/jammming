@@ -13,3 +13,5 @@ const getSearchResults = async (searchQuery, page) => {
     if (!profileResponse.ok) throw new Error('Network error while querying users profile at /v1/me');
     return profileResponse;
   };
+
+endpoint = `/v1/tracks/${trackId}`;
