@@ -80,7 +80,6 @@ function App() {
       name: e.currentTarget.dataset.trackName,
       uri: e.currentTarget.dataset.trackUri,
     };
-    console.log("Should add track: ", newTrack);
     addTrack(newTrack);
   }
 

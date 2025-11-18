@@ -7,12 +7,12 @@ export function Tracklist(props) {
     ));
 
     return (
-        <>
+        <div className="tracklist">
             <h1>Tracklist</h1>
             <ul>
                 {tracksDisplay}
             </ul>
-        </>
+        </div >
     );
 }
 
