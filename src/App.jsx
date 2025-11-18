@@ -156,25 +156,28 @@ function App() {
             height="50px"
           />
         </div>
+        <div id="permissionsButtonDiv">
+          <button onClick={handleGetPermissions}>Log in with Spotify</button>
+        </div>
+
+        <SearchBar
+          query={query}
+          setQuery={setQuery}
+          search={search}
+          loading={loading}
+          artistId={artistId}
+          albumId={albumId}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
+        {loading && <p>Loading...</p>}
       </div>
 
-      <div id="permissionsButtonDiv">
-        <button onClick={handleGetPermissions}>Log in with Spotify</button>
-      </div>
+      <div id="app-mainspace">
 
-      <SearchBar
-        query={query}
-        setQuery={setQuery}
-        search={search}
-        loading={loading}
-        artistId={artistId}
-        albumId={albumId}
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-      />
-      {loading && <p>Loading...</p>}
-      <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
-      {cardList}
+        <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
+        {cardList}
+      </div>
     </div>
   );
 }
