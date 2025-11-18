@@ -2,14 +2,16 @@ export function Tracklist(props) {
 
     const tracksDisplay = props.tracks.map(track => (
         <>
-           <p>{track.name}</p>
+            <li key={`${track.id}`}>{track.name}</li>
         </>
     ));
 
     return (
         <>
             <h1>Tracklist</h1>
-            {tracksDisplay}
+            <ul>
+                {tracksDisplay}
+            </ul>
         </>
     );
 }

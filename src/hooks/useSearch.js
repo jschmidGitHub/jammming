@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function useSearch() {
 
@@ -11,6 +11,10 @@ export function useSearch() {
   const baseUrl = 'https://api.spotify.com';
   const accessToken = localStorage.getItem('spotify_access_token');
 
+  useEffect(() => {
+    setResults([]);
+  }, [selectedOption]);
+
   const getSearchResults = async (searchQuery, page, selectedOption, artistId, albumId) => {
 
     let endpoint = '';
@@ -19,10 +23,10 @@ export function useSearch() {
 
       endpoint = '/v1/search';
       url = `${baseUrl}${endpoint}?q=artist%3A${encodeURIComponent(searchQuery)}&type=artist`;
-    } else if('album' === selectedOption) {
+    } else if ('album' === selectedOption) {
 
       // If artistId not blank then do an artist-album search
-      if(artistId) {
+      if (artistId) {
 
         console.log(`artistId: ${artistId}, listing albums for the artist`);
         endpoint = `/v1/artists/${artistId}/albums`;
@@ -79,8 +83,8 @@ export function useSearch() {
 
       if ('artist' === selectedOption) {
         setResults(jsonData.artists.items || []);
-      } else if('album' === selectedOption) {
-        if(artistId) {
+      } else if ('album' === selectedOption) {
+        if (artistId) {
           setResults(jsonData.items || []);
           console.log("artist-album listing results: ", jsonData.items);
         } else { // artistId is blank, did album search
@@ -88,8 +92,8 @@ export function useSearch() {
           console.log("searched plain albums: ", jsonData.albums.items);
         }
       } else { //track
-          console.log("searched artist's selected album for tracks: ", jsonData.tracks.items);
-          setResults(jsonData.tracks.items);
+        console.log("searched artist's selected album for tracks: ", jsonData.tracks.items);
+        setResults(jsonData.tracks.items);
       }
     } catch (err) {
       console.error("Search failed:", err);

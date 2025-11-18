@@ -1,7 +1,7 @@
 import SearchBar from './SearchBar.jsx';
 import Tracklist from './Tracklist.jsx';
 import { useState, useEffect } from 'react';
-import { useSearch }   from './hooks/useSearch.js';
+import { useSearch } from './hooks/useSearch.js';
 import { usePlaylist } from './hooks/usePlaylist.js';
 import getPermissions from './getPermissions.js';
 import exchangeCodeForToken from './exchangeCodeForToken.js';
@@ -129,14 +129,14 @@ function App() {
       cardList = results.map(item => (
         <div className="track-card" key={`${selectedOption}-${item.id}`} data-track-id={item.id} >
           <h2>{item.name}</h2>
-          <button 
-            className="addTrackButton" 
-            data-track-id={item.id} 
+          <button
+            className="addTrackButton"
+            data-track-id={item.id}
             data-track-name={item.name}
             data-track-uri={item.uri}
 
             onClick={handleAddTrack}>
-          Add
+            Add
           </button>
         </div>
       ));
