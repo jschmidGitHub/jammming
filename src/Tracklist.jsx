@@ -8,8 +8,8 @@ export function Tracklist(props) {
 
     return (
         <>
-            <h1>Tracklist</h1>
             <ul>
+                <h1>Tracklist</h1>
                 {tracksDisplay}
             </ul>
         </>

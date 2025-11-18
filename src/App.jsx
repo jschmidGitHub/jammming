@@ -149,17 +149,17 @@ function App() {
       <div id="header-container">
         <h1>Jammming Playlists</h1>
         <h2>Powered by:</h2>
-        <div>
+        <div class="logo-and-button">
           <img
             src="/Spotify_Full_Logo.png"
             alt="Spotify"
             height="50px"
           />
-        </div>
-        <div id="permissionsButtonDiv">
-          <button onClick={handleGetPermissions}>Log in with Spotify</button>
-        </div>
 
+          <div id="permissionsButtonDiv">
+            <button onClick={handleGetPermissions}>Log in with Spotify</button>
+          </div>
+        </div>
         <SearchBar
           query={query}
           setQuery={setQuery}

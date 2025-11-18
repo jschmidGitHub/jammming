@@ -16,10 +16,6 @@ function SearchBar(props) {
 
         <input value={props.query} onChange={(e) => props.setQuery(e.target.value)} placeholder="Keywords..." size="30" />
 
-        <button type="submit" disabled={props.loading}>
-          {props.loading ? 'Searching...' : 'Search'}
-        </button>
-
         <div>
           <input
             type="radio"
@@ -55,6 +51,11 @@ function SearchBar(props) {
           />
           <label htmlFor="track">Track</label>
         </div>
+
+        <button type="submit" disabled={props.loading}>
+          {props.loading ? 'Searching...' : 'Search'}
+        </button>
+
       </form>
     </>
   );
