@@ -87,7 +87,7 @@ function App() {
     if (selectedOption === 'artist') {
 
       cardList = results.map(item => (
-        <div className="card" key={`${selectedOption}-${item.id}`} data-artist-id={item.id} onClick={handleClickArtist}>
+        <li className="card" key={`${selectedOption}-${item.id}`} data-artist-id={item.id} onClick={handleClickArtist}>
           <h2>{item.name}</h2>
 
           <div className="card-content">
@@ -102,7 +102,7 @@ function App() {
             />
 
           </div>
-        </div>
+        </li>
       ));
     } else if (selectedOption === 'album') {
       cardList = results.map(item => (
@@ -174,9 +174,10 @@ function App() {
       </div>
 
       <div id="app-mainspace">
-
         <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
-        {cardList}
+        <ul>
+          {cardList}
+        </ul>
       </div>
     </div>
   );
