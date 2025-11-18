@@ -88,7 +88,7 @@ function App() {
     if (selectedOption === 'artist') {
 
       cardList = results.map(item => (
-        <div className="card" key={`${item.id}`} data-artist-id={item.id} onClick={handleClickArtist}>
+        <div className="card" key={`${selectedOption}-${item.id}`} data-artist-id={item.id} onClick={handleClickArtist}>
           <h2>{item.name}</h2>
 
           <div className="card-content">
@@ -107,7 +107,7 @@ function App() {
       ));
     } else if (selectedOption === 'album') {
       cardList = results.map(item => (
-        <div className="card" key={`${item.id}`} data-album-id={item.id} onClick={handleClickAlbum}>
+        <div className="card" key={`${selectedOption}-${item.id}`} data-album-id={item.id} onClick={handleClickAlbum}>
           <h2>{item.name}</h2>
 
           <div className="card-content">
@@ -127,7 +127,7 @@ function App() {
       ));
     } else { // 'track'
       cardList = results.map(item => (
-        <div className="track-card" key={`${item.id}`} data-track-id={item.id} >
+        <div className="track-card" key={`${selectedOption}-${item.id}`} data-track-id={item.id} >
           <h2>{item.name}</h2>
           <button 
             className="addTrackButton" 
