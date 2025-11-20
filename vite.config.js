@@ -10,7 +10,7 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '127.0.0.1',
-      'jonathan-schmid.redirectme.net'
+      'jschmid.xyz'
     ]
   }
 })

@@ -149,7 +149,7 @@ function App() {
       <div id="header-container">
         <h1>Jammming Playlists</h1>
         <h2>Powered by:</h2>
-        <div class="logo-and-button">
+        <div className="logo-and-button">
           <img
             src="/Spotify_Full_Logo.png"
             alt="Spotify"

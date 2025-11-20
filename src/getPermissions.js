@@ -6,7 +6,7 @@ async function getPermissions() {
     const codeChallenge = base64encode(hashedCode);
 
     const clientId = '91abbeed1fc745b6b9d501bfdf22a243';
-    const redirectUri = 'http://127.0.0.1:5175';
+    const redirectUri = 'https://jschmid.xyz'; //http://127.0.0.1:5175
     const scope = 'user-read-private user-read-email';
     const authUrl = new URL("https://accounts.spotify.com/authorize")
 
@@ -38,7 +38,7 @@ const generateRandomString = (length) => {
 const sha256 = async (plain) => {
     const encoder = new TextEncoder()
     const data = encoder.encode(plain)
-    return window.crypto.subtle.digest('SHA-256', data);
+    return window.crypto.subtle.digest('SHA-256', data); 
 }
 
 const base64encode = (arrayBuffer) => {
