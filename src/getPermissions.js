@@ -6,12 +6,14 @@ async function getPermissions() {
     const codeChallenge = base64encode(hashedCode);
 
     const clientId = '91abbeed1fc745b6b9d501bfdf22a243';
-    const redirectUri = 'https://jschmid.xyz'; //http://127.0.0.1:5175
+    const redirectUri = 'https://jschmid.xyz/jammming/';
     const scope = 'user-read-private user-read-email';
     const authUrl = new URL("https://accounts.spotify.com/authorize")
 
     window.localStorage.setItem('code_verifier', codeVerifier);
     window.localStorage.setItem('spotify_auth_state', randomState);
+    
+    console.log("Setting window local storage to auth state [new]: ", randomState);
 
     const params = {
         response_type: 'code',

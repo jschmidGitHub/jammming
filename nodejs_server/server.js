@@ -1,18 +1,18 @@
 // server.js
 import express from 'express';
 import cors from 'cors';
-import fetch from 'node-fetch';   // npm i node-fetch@2   (or use native fetch in Node ≥18)
+import fetch from 'node-fetch';   // npm i node-fetch@2
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
-const PORT = 5176;
+const PORT = 3000;
 
 // ---------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------
-app.use(cors());                                   // allow your SPA (e.g. localhost:5173)
+app.use(cors());                                   // allow your SPA
 app.use(express.json());                           // parse JSON bodies
 
 // ---------------------------------------------------------------------
@@ -20,22 +20,29 @@ app.use(express.json());                           // parse JSON bodies
 // Body: { code: string, code_verifier: string }
 // ---------------------------------------------------------------------
 app.post('/api/exchange', async (req, res) => {
+    console.log("Got an /api/exchange call");
     const { code, code_verifier } = req.body;
 
-    // ---- basic validation ------------------------------------------------
+    if (!code) {
+        console.log("Code missing in req body.");
+    }
+    if (!code_verifier) {
+        console.log("Code_verifier missing in req body.");
+    }
+    // Basic validation
     if (!code || !code_verifier) {
         return res
             .status(400)
             .json({ error: 'Missing required fields: code and/or code_verifier' });
     }
 
-    // ---- Spotify token request -------------------------------------------
+    // Spotify token request
     const tokenUrl = 'https://accounts.spotify.com/api/token';
 
     const payload = new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: process.env.REDIRECT_URI,   // must match exactly what you sent
+        redirect_uri: process.env.REDIRECT_URI,   // must match exactly what was sent
         client_id: process.env.SPOTIFY_CLIENT_ID,
         client_secret: process.env.SPOTIFY_CLIENT_SECRET,
         code_verifier,
@@ -86,5 +93,5 @@ app.use((_req, res) => {
 // Start server
 // ---------------------------------------------------------------------
 app.listen(PORT, () => {
-    console.log(`Backend listening at http://localhost:${PORT} POST /api/exchange`);
+    console.log(`Backend listening at localhost:${PORT} for POST /api/exchange`);
 });

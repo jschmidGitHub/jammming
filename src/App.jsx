@@ -5,6 +5,7 @@ import { useSearch } from './hooks/useSearch.js';
 import { usePlaylist } from './hooks/usePlaylist.js';
 import getPermissions from './getPermissions.js';
 import exchangeCodeForToken from './exchangeCodeForToken.js';
+import spotifyFullLogo from './assets/Spotify_Full_Logo.png';
 import './App.css';
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     const state = params.get('state');
+
+    console.log("Got code from window: [new]", code);
 
     if (code) {
 
@@ -151,7 +154,7 @@ function App() {
         <h2>Powered by:</h2>
         <div className="logo-and-button">
           <img
-            src="/Spotify_Full_Logo.png"
+            src={spotifyFullLogo}
             alt="Spotify"
             height="50px"
           />

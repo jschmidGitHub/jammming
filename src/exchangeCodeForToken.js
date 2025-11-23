@@ -2,11 +2,12 @@ async function exchangeCodeForToken(code, state) {
 
     const codeVerifier = localStorage.getItem('code_verifier');
     const storedState = localStorage.getItem('spotify_auth_state');
+
     if (state !== storedState) {
         throw new Error('State mismatch - possible CSRF');
     }
 
-    const response = await fetch('http://127.0.0.1:5176/api/exchange', {
+    const response = await fetch('https://jschmid.xyz/api/exchange', { // https://jschmid.xyz/api/exchange', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+
+  base: '/jammming/',
+
   server: {
     host: '0.0.0.0', // Ensures it binds to all interfaces (same as --host)
     port: 5175,
@@ -12,5 +15,11 @@ export default defineConfig({
       '127.0.0.1',
       'jschmid.xyz'
     ]
-  }
+  },
+
+  preview: {
+    host: '0.0.0.0',
+    port: 4175,
+    strictPort: true,
+  },
 })
