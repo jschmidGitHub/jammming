@@ -1,0 +1,41 @@
+.tracklist-container {
+    min-width: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 8px;
+    user-select: none;
+}
+
+.tracklist-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.track-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.track-card span {
+    flex: 1;
+}
+
+.remove-btn {
+    background: #c06ff5;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.remove-btn:hover {
+    background: #a050d5;
+}

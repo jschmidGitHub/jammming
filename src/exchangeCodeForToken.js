@@ -7,7 +7,7 @@ async function exchangeCodeForToken(code, state) {
         throw new Error('State mismatch - possible CSRF');
     }
 
-    const response = await fetch('https://jschmid.xyz/api/exchange', { // https://jschmid.xyz/api/exchange', { 
+    const response = await fetch('/api/exchange/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

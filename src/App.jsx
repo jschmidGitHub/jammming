@@ -6,6 +6,7 @@ import { usePlaylist } from './hooks/usePlaylist.js';
 import getPermissions from './getPermissions.js';
 import exchangeCodeForToken from './exchangeCodeForToken.js';
 import spotifyFullLogo from './assets/Spotify_Full_Logo.png';
+import noPic from './assets/noPic.png';
 import './App.css';
 
 function App() {
@@ -33,8 +34,6 @@ function App() {
     const code = params.get('code');
     const state = params.get('state');
 
-    console.log("Got code from window: [new]", code);
-
     if (code) {
 
       exchangeCodeForToken(code, state)
@@ -49,10 +48,10 @@ function App() {
 
   const getMediumImage = (images) => {
     if (!images || !Array.isArray(images) || images.length === 0) {
-      return '/noPic.png';
+      return noPic;
     }
     // Try index 1 (medium), fallback to index 0 (large), then small
-    return images[1]?.url || images[0]?.url || images[2]?.url || '/noPic.png';
+    return images[1]?.url || images[0]?.url || images[2]?.url || noPic;
   };
 
   function handleGetPermissions() {
@@ -99,7 +98,7 @@ function App() {
               src={getMediumImage(item.images)}
               alt={item.name}
               onError={(e) => {
-                e.target.src = '/noPic.png'; // fallback image
+                e.target.src = noPic; // fallback image
                 e.target.onerror = null; // prevent infinite loop if noPic.png is also missing
               }}
             />
@@ -118,7 +117,7 @@ function App() {
               src={getMediumImage(item.images)}
               alt={item.name}
               onError={(e) => {
-                e.target.src = '/noPic.png'; // fallback image
+                e.target.src = noPic; // fallback image
                 e.target.onerror = null; // prevent infinite loop if noPic.png is also missing
               }}
             />

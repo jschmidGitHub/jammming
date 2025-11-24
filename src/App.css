@@ -112,7 +112,8 @@ button {
   align-items: baseline;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  max-width: 390px;               
+  max-width: 320px;
+  min-width: 320px;           
 }
 
 .card-content {

@@ -12,23 +12,25 @@ const PORT = 3000;
 // ---------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------
-app.use(cors());                                   // allow your SPA
+app.use(cors());                                   // allow SPA
 app.use(express.json());                           // parse JSON bodies
 
 // ---------------------------------------------------------------------
 // POST /api/exchange
 // Body: { code: string, code_verifier: string }
 // ---------------------------------------------------------------------
-app.post('/api/exchange', async (req, res) => {
-    console.log("Got an /api/exchange call");
+app.post('/', async (req, res) => {
     const { code, code_verifier } = req.body;
 
     if (!code) {
         console.log("Code missing in req body.");
     }
+    //console.log("code: ", code);
     if (!code_verifier) {
         console.log("Code_verifier missing in req body.");
     }
+    //console.log("code_verifier: ", code_verifier);
+
     // Basic validation
     if (!code || !code_verifier) {
         return res
@@ -44,7 +46,6 @@ app.post('/api/exchange', async (req, res) => {
         code,
         redirect_uri: process.env.REDIRECT_URI,   // must match exactly what was sent
         client_id: process.env.SPOTIFY_CLIENT_ID,
-        client_secret: process.env.SPOTIFY_CLIENT_SECRET,
         code_verifier,
     });
 
@@ -57,15 +58,19 @@ app.post('/api/exchange', async (req, res) => {
             body: payload,
         });
 
+        //console.log("A");
         const data = await response.json();
+        //console.log("B");
 
         if (!response.ok) {
             // Spotify returned an error object
+            console.error("Error from Spotify.");
             return res.status(response.status).json({
                 error: data.error || 'unknown_error',
                 error_description: data.error_description,
             });
         }
+        //console.log("C");
 
         // Success – forward the tokens to the front-end
         res.json({
@@ -93,5 +98,5 @@ app.use((_req, res) => {
 // Start server
 // ---------------------------------------------------------------------
 app.listen(PORT, () => {
-    console.log(`Backend listening at localhost:${PORT} for POST /api/exchange`);
+    console.log(`Backend listening at localhost:${PORT} for POST /`);
 });
