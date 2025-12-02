@@ -28,6 +28,31 @@ html, body, #root {
   padding: 4px 0;
 }
 
+#specified {
+  position: sticky;
+  top: 0;                    /* sticks to the top of the viewport */
+  background-color: rgb(39, 0, 39);   /* same as body bg so it blends */
+  color: #b9b9b9;
+  padding: 12px 20px;
+  margin: 0;
+  z-index: 100;                 /* make sure it stays above other content */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.95rem;
+  backdrop-filter: blur(8px);   /* nice subtle glass effect (optional) */
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#specified button {
+  margin-left: 12px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: none;
+}
+
 h1 {
   margin: 0;
   padding: 2px 0 0 2px;
@@ -112,8 +137,7 @@ button {
   align-items: baseline;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  max-width: 320px;
-  min-width: 320px;           
+  max-width: 390px;               
 }
 
 .card-content {

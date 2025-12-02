@@ -5,17 +5,15 @@ import { useSearch } from './hooks/useSearch.js';
 import { usePlaylist } from './hooks/usePlaylist.js';
 import getPermissions from './getPermissions.js';
 import exchangeCodeForToken from './exchangeCodeForToken.js';
-import spotifyFullLogo from './assets/Spotify_Full_Logo.png';
+import spotifyLogo from './assets/Spotify_Full_Logo.png';
 import noPic from './assets/noPic.png';
 import './App.css';
 
 function App() {
 
   const { results, loading, query, setQuery, search, hasMore, totalPages, selectedOption, setSelectedOption } = useSearch();
-  const { tracks, addTrack, removeTrack, clearTracks, synchPlaylist } = usePlaylist();
+  const { tracks, addTrack, removeTrack, clearTracks } = usePlaylist();
   const [loginTriggered, setLoginTriggered] = useState(false);
-  const [artistAlertTriggered, setArtistAlertTriggered] = useState(false);
-  const [albumAlertTriggered, setAlbumAlertTriggered] = useState(false);
   const [artistId, setArtistId] = useState('');
   const [albumId, setAlbumId] = useState('');
   let cardList = [];
@@ -53,7 +51,7 @@ function App() {
       return noPic;
     }
     // Try index 1 (medium), fallback to index 0 (large), then small
-    return images[1]?.url || images[0]?.url || images[2]?.url || noPic;
+    return images[1]?.url || images[0]?.url || images[2]?.url || { noPic };
   };
 
   function handleGetPermissions() {
@@ -67,11 +65,6 @@ function App() {
     });
     setArtistId(e.currentTarget.dataset.artistId);
     e.currentTarget.classList.add('selected-card');
-    
-    if(!artistAlertTriggered) {
-      window.alert("You have highlighted an artist.  Selecting 'album' and clicking Search will now list all of the selected artist's albums.");
-      setArtistAlertTriggered(true);
-    }
   }
   function handleClickAlbum(e) {
 
@@ -81,11 +74,6 @@ function App() {
     });
     setAlbumId(e.currentTarget.dataset.albumId);
     e.currentTarget.classList.add('selected-card');
-    
-    if(!albumAlertTriggered) {
-      window.alert("You have highlighted an album.  Selecting 'track' and clicking Search will now list all of the selected album's tracks.");
-      setAlbumAlertTriggered(true);
-    }
   }
   function handleAddTrack(e) {
 
@@ -95,6 +83,20 @@ function App() {
       uri: e.currentTarget.dataset.trackUri,
     };
     addTrack(newTrack);
+  }
+
+  function handleClearArtist() {
+    setArtistId('');
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.remove('selected-card');
+    });
+  }
+
+  function handleClearAlbum() {
+    setAlbumId('');
+    document.querySelectorAll('.card').forEach(card => {
+      card.classList.remove('selected-card');
+    });
   }
 
   if (results.length > 0) {
@@ -110,7 +112,7 @@ function App() {
               src={getMediumImage(item.images)}
               alt={item.name}
               onError={(e) => {
-                e.target.src = noPic; // fallback image
+                e.target.src = { noPic }; // fallback image
                 e.target.onerror = null; // prevent infinite loop if noPic.png is also missing
               }}
             />
@@ -129,7 +131,7 @@ function App() {
               src={getMediumImage(item.images)}
               alt={item.name}
               onError={(e) => {
-                e.target.src = noPic; // fallback image
+                e.target.src = { noPic }; // fallback image
                 e.target.onerror = null; // prevent infinite loop if noPic.png is also missing
               }}
             />
@@ -166,13 +168,13 @@ function App() {
         <h2>Powered by:</h2>
         <div className="logo-and-button">
           <img
-            src={spotifyFullLogo}
+            src={spotifyLogo}
             alt="Spotify"
             height="50px"
           />
 
           <div id="permissionsButtonDiv">
-            <button onClick={handleGetPermissions}>Log in with Spotify</button>
+            <button onClick={handleGetPermissions}>Log in:</button>
           </div>
         </div>
         <SearchBar
@@ -187,9 +189,16 @@ function App() {
         />
         {loading && <p>Loading...</p>}
       </div>
+      <div id="specified">
+        <p>{artistId ? 'Artist specified, listing artists albums' : ''}</p>
+        <button onClick={handleClearArtist} hidden={!artistId}>clear</button>
+
+        <p>{albumId ? 'Album specified, listing album-tracks' : ''}</p>
+        <button onClick={handleClearAlbum} hidden={!albumId}>clear</button>
+      </div>
 
       <div id="app-mainspace">
-        <Tracklist tracks={tracks} removeTrack={removeTrack} clearTracks={clearTracks} synchPlaylist={synchPlaylist} />
+        <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
         <ul>
           {cardList}
         </ul>
