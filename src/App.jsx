@@ -12,8 +12,10 @@ import './App.css';
 function App() {
 
   const { results, loading, query, setQuery, search, hasMore, totalPages, selectedOption, setSelectedOption } = useSearch();
-  const { tracks, addTrack, removeTrack, clearTracks } = usePlaylist();
+  const { tracks, addTrack, removeTrack, clearTracks, synchPlaylist } = usePlaylist();
   const [loginTriggered, setLoginTriggered] = useState(false);
+  const [artistAlertTriggered, setArtistAlertTriggered] = useState(false);
+  const [albumAlertTriggered, setAlbumAlertTriggered] = useState(false);
   const [artistId, setArtistId] = useState('');
   const [albumId, setAlbumId] = useState('');
   let cardList = [];
@@ -65,6 +67,11 @@ function App() {
     });
     setArtistId(e.currentTarget.dataset.artistId);
     e.currentTarget.classList.add('selected-card');
+    
+    if(!artistAlertTriggered) {
+      window.alert("You have highlighted an artist.  Selecting 'album' and clicking Search will now list all of the selected artist's albums.");
+      setArtistAlertTriggered(true);
+    }
   }
   function handleClickAlbum(e) {
 
@@ -74,6 +81,11 @@ function App() {
     });
     setAlbumId(e.currentTarget.dataset.albumId);
     e.currentTarget.classList.add('selected-card');
+    
+    if(!albumAlertTriggered) {
+      window.alert("You have highlighted an album.  Selecting 'track' and clicking Search will now list all of the selected album's tracks.");
+      setAlbumAlertTriggered(true);
+    }
   }
   function handleAddTrack(e) {
 
@@ -130,6 +142,7 @@ function App() {
       cardList = results.map(item => (
         <div className="track-card" key={`${selectedOption}-${item.id}`} data-track-id={item.id} >
           <h2>{item.name}</h2>
+          <p>Artist: {item.artists[0].name}</p>
           <button
             className="addTrackButton"
             data-track-id={item.id}
@@ -176,7 +189,7 @@ function App() {
       </div>
 
       <div id="app-mainspace">
-        <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
+        <Tracklist tracks={tracks} removeTrack={removeTrack} clearTracks={clearTracks} synchPlaylist={synchPlaylist} />
         <ul>
           {cardList}
         </ul>

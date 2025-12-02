@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 function SearchBar(props) {
 
   const handleOptionChange = (event) => {
@@ -14,7 +12,9 @@ function SearchBar(props) {
         props.search(props.query, 1, props.selectedOption, props.artistId, props.albumId);
       }}>
 
-        <input value={props.query} onChange={(e) => props.setQuery(e.target.value)} placeholder="Keywords..." size="30" />
+        <input value={props.query} 
+               disabled={props.isSearchFormDisabled} 
+               onChange={(e) => props.setQuery(e.target.value)} placeholder="Keywords..." size="30" />
 
         <div>
           <input

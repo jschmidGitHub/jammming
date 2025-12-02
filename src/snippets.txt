@@ -15,3 +15,12 @@ const getSearchResults = async (searchQuery, page) => {
   };
 
 endpoint = `/v1/tracks/${trackId}`;
+
+  // Determine when the form should be disabled
+  const isSearchFormDisabled = 
+    (selectedOption === 'album' && artistId) ||
+    (selectedOption === 'track' && albumId);
+
+      useEffect(() => {
+     console.log('Form disabled?: ', props.isSearchFormDisabled);
+  }, [props.isSearchFormDisabled]);

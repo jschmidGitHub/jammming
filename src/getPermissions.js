@@ -7,7 +7,6 @@ async function getPermissions() {
 
     const clientId = '91abbeed1fc745b6b9d501bfdf22a243';
     const redirectUri = 'https://jschmid.xyz/jammming/';
-    const scope = 'user-read-private user-read-email';
     const authUrl = new URL("https://accounts.spotify.com/authorize")
 
     window.localStorage.setItem('code_verifier', codeVerifier);
@@ -18,7 +17,7 @@ async function getPermissions() {
     const params = {
         response_type: 'code',
         client_id: clientId,
-        scope: scope,
+        scope: 'user-library-read playlist-read-private playlist-modify-private',
         code_challenge_method: 'S256',
         code_challenge: codeChallenge,
         redirect_uri: redirectUri,

@@ -19,7 +19,7 @@ app.use(express.json());                           // parse JSON bodies
 // POST /api/exchange
 // Body: { code: string, code_verifier: string }
 // ---------------------------------------------------------------------
-app.post('/', async (req, res) => {
+app.post('/api/exchange', async (req, res) => {
     const { code, code_verifier } = req.body;
 
     if (!code) {
@@ -58,9 +58,7 @@ app.post('/', async (req, res) => {
             body: payload,
         });
 
-        //console.log("A");
         const data = await response.json();
-        //console.log("B");
 
         if (!response.ok) {
             // Spotify returned an error object
@@ -70,7 +68,6 @@ app.post('/', async (req, res) => {
                 error_description: data.error_description,
             });
         }
-        //console.log("C");
 
         // Success – forward the tokens to the front-end
         res.json({
@@ -87,6 +84,53 @@ app.post('/', async (req, res) => {
     }
 });
 
+async function refreshAccessToken(refreshToken, res) {
+
+    if (!refreshToken) throw new Error('No refresh token');
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: 'Basic ' + btoa(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET),
+        },
+        body: new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+        }),
+    });
+
+    if (!response.ok) {
+        console.error('Failed to refresh the token');
+        throw new Error('Failed to refresh token');
+    }
+
+    const data = await response.json();
+
+    const spotifyAccessToken = data.access_token;
+    let spotifyRefreshToken = null;
+    // Note: refresh_token is usually reused unless a new one is returned
+    if (data.refresh_token) {
+        spotifyRefreshToken = data.refresh_token;
+    }
+    const spotifyExpiresAt = Date.now() + (data.expires_in * 1000);
+
+    //console.log("Got data: {access-token, refresh-token, expires-at}: ", spotifyAccessToken, spotifyRefreshToken, spotifyExpiresAt);
+
+    // Success – forward the tokens to the front-end
+    res.json({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_in: data.expires_in,
+    });
+}
+
+app.post('/api/refresh', async (req, res) => {
+    const { refreshToken } = req.body;
+    console.log("Got refresh call: ", refreshToken);
+    refreshAccessToken(refreshToken, res);
+});
+
 // ---------------------------------------------------------------------
 // 404 for everything else
 // ---------------------------------------------------------------------
@@ -98,5 +142,5 @@ app.use((_req, res) => {
 // Start server
 // ---------------------------------------------------------------------
 app.listen(PORT, () => {
-    console.log(`Backend listening at localhost:${PORT} for POST /`);
+    console.log(`Backend listening at localhost:${PORT} for POSTs`);
 });

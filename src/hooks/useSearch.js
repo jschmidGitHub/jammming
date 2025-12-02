@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getValidAccessToken } from '../getValidAccessToken';
 
 export function useSearch() {
 
@@ -9,7 +10,6 @@ export function useSearch() {
   const [page, setPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState('artist');
   const baseUrl = 'https://api.spotify.com';
-  const accessToken = localStorage.getItem('spotify_access_token');
 
   useEffect(() => {
     setResults([]);
@@ -25,30 +25,35 @@ export function useSearch() {
       url = `${baseUrl}${endpoint}?q=artist%3A${encodeURIComponent(searchQuery)}&type=artist`;
     } else if ('album' === selectedOption) {
 
-      // If artistId not blank then do an artist-album search
-      if (artistId) {
+      if (artistId) { // If artistId not blank then do an albums-for-artist search
 
-        console.log(`artistId: ${artistId}, listing albums for the artist`);
+        //console.log(`artistId: ${artistId}, listing albums for the artist`);
         endpoint = `/v1/artists/${artistId}/albums`;
         url = `${baseUrl}${endpoint}`;
       } else {
 
-        console.log("blank artistID, searching all albums");
+        //console.log("blank artistID, searching all albums");
         endpoint = '/v1/search';
         url = `${baseUrl}${endpoint}?q=album%3A${encodeURIComponent(searchQuery)}&type=album`;
-        console.log(url);
       }
-    } else { // album-tracks
+    } else { // 'track' === selectedOption
 
-      console.log(`artistId: ${artistId}, albumId: ${albumId} listing tracks for album`);
-      endpoint = `/v1/albums/${albumId}`;
-      url = `${baseUrl}${endpoint}`;
+      if (albumId) {
+
+        //console.log(`albumId: ${albumId} listing tracks for album`);
+        endpoint = `/v1/albums/${albumId}`;
+        url = `${baseUrl}${endpoint}`;
+      } else { // Its a plain track search
+
+        //console.log("blank artistID or albumId, searching all tracks");
+        endpoint = '/v1/search';
+        url = `${baseUrl}${endpoint}?q=track%3A${encodeURIComponent(searchQuery)}&type=track`;
+      }
     }
-
 
     const profileResponse = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${await getValidAccessToken()}`
       }
     });
 
@@ -86,14 +91,18 @@ export function useSearch() {
       } else if ('album' === selectedOption) {
         if (artistId) {
           setResults(jsonData.items || []);
-          console.log("artist-album listing results: ", jsonData.items);
+          //console.log("artist-album listing results: ", jsonData.items);
         } else { // artistId is blank, did album search
           setResults(jsonData.albums.items || []);
-          console.log("searched plain albums: ", jsonData.albums.items);
+          //console.log("searched plain albums: ", jsonData.albums.items);
         }
       } else { //track
-        console.log("searched artist's selected album for tracks: ", jsonData.tracks.items);
-        setResults(jsonData.tracks.items);
+        //if(albumId) {
+        //console.log("searched artist's selected album for tracks: ", jsonData.tracks.items);
+        //} else { // plain track search
+        //console.log("searched plain tracks: ", jsonData.tracks);
+        //}
+        setResults(jsonData.tracks.items || []);
       }
     } catch (err) {
       console.error("Search failed:", err);
