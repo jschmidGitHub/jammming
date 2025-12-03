@@ -12,7 +12,7 @@ import './App.css';
 function App() {
 
   const { results, loading, query, setQuery, search, hasMore, totalPages, selectedOption, setSelectedOption } = useSearch();
-  const { tracks, addTrack, removeTrack, clearTracks } = usePlaylist();
+  const { tracks, addTrack, removeTrack, clearTracks, synchPlaylist } = usePlaylist();
   const [loginTriggered, setLoginTriggered] = useState(false);
   const [artistId, setArtistId] = useState('');
   const [albumId, setAlbumId] = useState('');
@@ -190,15 +190,15 @@ function App() {
         {loading && <p>Loading...</p>}
       </div>
       <div id="specified">
-        <p>{artistId ? 'Artist specified, listing artists albums' : ''}</p>
+        <p>{artistId ? 'Artist selected, \'Album\' will list artists albums' : ''}</p>
         <button onClick={handleClearArtist} hidden={!artistId}>clear</button>
 
-        <p>{albumId ? 'Album specified, listing album-tracks' : ''}</p>
+        <p>{albumId ? 'Album selected, \'Track\' will list album-tracks' : ''}</p>
         <button onClick={handleClearAlbum} hidden={!albumId}>clear</button>
       </div>
 
       <div id="app-mainspace">
-        <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} />
+        <Tracklist tracks={tracks} addTrack={addTrack} removeTrack={removeTrack} clearTracks={clearTracks} synchPlaylist={synchPlaylist} />
         <ul>
           {cardList}
         </ul>

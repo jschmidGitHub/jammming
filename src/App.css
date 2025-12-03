@@ -41,6 +41,10 @@ html, body, #root {
   font-size: 0.95rem;
   backdrop-filter: blur(8px);   /* nice subtle glass effect (optional) */
   -webkit-backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 #specified button {
