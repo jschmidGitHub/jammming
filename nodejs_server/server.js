@@ -23,11 +23,11 @@ app.post('/api/exchange', async (req, res) => {
     const { code, code_verifier } = req.body;
 
     if (!code) {
-        console.log("Code missing in req body.");
+        console.error("Code missing in req body.");
     }
     //console.log("code: ", code);
     if (!code_verifier) {
-        console.log("Code_verifier missing in req body.");
+        console.error("Code_verifier missing in req body.");
     }
     //console.log("code_verifier: ", code_verifier);
 
