@@ -63,7 +63,11 @@ export function useSearch() {
 
   const search = async (searchQuery, pageNum, selectedOption, artistId, albumId, append = false) => {
 
-    if (!searchQuery.trim()) {
+    const isIdBasedSearch =
+      (selectedOption === 'album' && artistId) ||
+      (selectedOption === 'track' && albumId);
+
+    if (!isIdBasedSearch && !searchQuery.trim()) {
       setResults([]);
       setLoading(false);
       setTotalPages(1);

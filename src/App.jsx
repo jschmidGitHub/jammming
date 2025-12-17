@@ -46,6 +46,22 @@ function App() {
     }
   }, []);
 
+  // Auto-search when switching to 'album' search and artistId is stored
+  useEffect(() => {
+    if (artistId && selectedOption === 'album') {
+      //console.log("Auto-searching albums for artist:", artistId);
+      search('', 1, 'album', artistId, albumId);
+    }
+  }, [artistId, selectedOption]); // Only trigger when artistId or selectedOption changes
+
+  // Auto-search when switching to 'track' search and albumId is stored
+  useEffect(() => {
+    if (albumId && selectedOption === 'track') {
+      //console.log("Auto-searching tracks for album:", albumId);
+      search('', 1, 'track', artistId, albumId);
+    }
+  }, [albumId, selectedOption]); // Only trigger when albumId or selectedOption changes
+
   const getMediumImage = (images) => {
     if (!images || !Array.isArray(images) || images.length === 0) {
       return noPic;
