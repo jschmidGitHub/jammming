@@ -160,7 +160,11 @@ function App() {
       cardList = results.map(item => (
         <div className="track-card" key={`${selectedOption}-${item.id}`} data-track-id={item.id} >
           <h2>{item.name}</h2>
-          <p>Artist: {item.artists[0].name}</p>
+          <p>
+            Artist: {item.artists && item.artists.length > 0
+              ? item.artists[0].name
+              : 'Unknown Artist'}
+          </p>
           <button
             className="addTrackButton"
             data-track-id={item.id}

@@ -79,7 +79,7 @@ export function useSearch() {
     try {
       const response = await getSearchResults(searchQuery, pageNum, selectedOption, artistId, albumId);
       const jsonData = await response.json();
-
+      
       //const newTotalPages = jsonData.total_pages || 1;
       //setTotalPages(newTotalPages);
       //setPage(pageNum);
